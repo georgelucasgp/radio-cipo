@@ -16,36 +16,36 @@ function checkFoldersExist() {
     fs.mkdirSync('media/convert', { recursive: true });
 }
 
-function downloadVideoAndConvertToMP3(videoId: string, date: number) {
+function downloadVideoAndConvertToMP3(videoId: string, title: string) {
   ytdl(`${baseUrl}${videoId}`, { filter: 'audioonly' }).pipe(
     fs
-      .createWriteStream(`media/videos/${date}.mp4`)
-      .on('finish', () => convertVideoToMP3(date)),
+      .createWriteStream(`media/videos/${title}.mp4`)
+      .on('finish', () => convertVideoToMP3(title)),
   );
 }
 
-function convertVideoToMP3(date: number) {
-  ffmpeg(fs.createReadStream(`media/videos/${date}.mp4`))
+function convertVideoToMP3(title: string) {
+  ffmpeg(fs.createReadStream(`media/videos/${title}.mp4`))
     .format('mp3')
     .on('error', (err) => {
       console.log('an error happened: ' + err.message);
     })
-    .save(`media/convert/${date}.mp3`)
+    .save(`media/convert/${title}.mp3`)
     .on('end', () => {
       console.log('file has been converted succesfully');
-      fs.rmSync(`media/videos/${date}.mp4`);
+      fs.rmSync(`media/videos/${title}.mp4`);
     });
 }
 
 @Injectable()
 export class RadioService {
-  create(createRadioDto: CreateRadioDto) {
+  async create(createRadioDto: CreateRadioDto) {
     const { videoId } = createRadioDto;
-    const date = Date.now();
-
+    const info = await ytdl.getInfo(videoId);
+    const title = info.videoDetails.title;
+    // const date = Date.now();
     checkFoldersExist();
-
-    downloadVideoAndConvertToMP3(videoId, date);
+    downloadVideoAndConvertToMP3(videoId, title);
   }
 
   findAll() {
