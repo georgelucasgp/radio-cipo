@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRadioDto } from './dto/create-radio.dto';
-import { UpdateRadioDto } from './dto/update-radio.dto';
 import * as fs from 'fs';
 import * as ytdl from 'ytdl-core';
 import * as ffmpeg from 'fluent-ffmpeg';
@@ -46,21 +45,5 @@ export class RadioService {
     // const date = Date.now();
     checkFoldersExist();
     downloadVideoAndConvertToMP3(videoId, title);
-  }
-
-  findAll() {
-    return `This action returns all radio`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} radio`;
-  }
-
-  update(id: number, updateRadioDto: UpdateRadioDto) {
-    return `This action updates a #${id} radio`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} radio`;
   }
 }

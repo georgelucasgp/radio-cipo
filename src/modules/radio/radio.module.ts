@@ -4,6 +4,6 @@ import { RadioController } from './radio.controller';
 
 @Module({
   controllers: [RadioController],
-  providers: [RadioService]
+  providers: [RadioService],
 })
 export class RadioModule {}
