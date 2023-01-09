@@ -1,3 +1,3 @@
 export class CreateRadioDto {
-  videoId: string;
+  videoUrl: string;
 }
